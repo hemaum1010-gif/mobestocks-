@@ -1,0 +1,146 @@
+{
+  "entities": {
+    "User": {
+      "title": "User Profile",
+      "description": "User account information and balances",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "fullName": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "phone": { "type": "string" },
+        "referralCode": { "type": "string" },
+        "referredBy": { "type": "string" },
+        "balance": { "type": "number" },
+        "totalInvestment": { "type": "number" },
+        "totalProfit": { "type": "number" },
+        "totalWithdrawals": { "type": "number" },
+        "role": { "type": "string", "enum": ["user", "admin"] },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "isBlocked": { "type": "boolean" },
+        "isWithdrawalBlocked": { "type": "boolean" },
+        "suspiciousActivityScore": { "type": "integer" },
+        "winStreak": { "type": "integer" },
+        "lastActivityAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["uid", "fullName", "email", "role"]
+    },
+    "Deposit": {
+      "title": "Deposit Request",
+      "description": "User deposit requests for admin approval",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "userEmail": { "type": "string" },
+        "amount": { "type": "number" },
+        "utrNumber": { "type": "string" },
+        "status": { "type": "string", "enum": ["pending", "approved", "rejected"] },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "upiId": { "type": "string" }
+      }
+    },
+    "Withdrawal": {
+      "title": "Withdrawal Request",
+      "description": "User withdrawal requests for admin approval",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "userEmail": { "type": "string" },
+        "amount": { "type": "number" },
+        "method": { "type": "string", "enum": ["UPI", "Bank"] },
+        "status": { "type": "string", "enum": ["pending", "approved", "rejected"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      }
+    },
+    "Investment": {
+      "title": "User Investment",
+      "description": "Active investment contracts",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "planId": { "type": "string" },
+        "planName": { "type": "string" },
+        "category": { "type": "string", "enum": ["Bronze", "Gold", "Diamond"] },
+        "amount": { "type": "number" },
+        "dailyProfit": { "type": "number" },
+        "startDate": { "type": "string", "format": "date-time" },
+        "endDate": { "type": "string", "format": "date-time" },
+        "status": { "type": "string", "enum": ["active", "completed"] },
+        "claimFrequency": { "type": "string", "enum": ["monthly", "yearly"] }
+      }
+    },
+    "MobeitorRoom": {
+      "title": "Mobeitor Game Room",
+      "description": "Configuration for a game room",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "time": { "type": "integer" },
+        "description": { "type": "string" },
+        "color": { "type": "string" },
+        "isDisabled": { "type": "boolean" },
+        "activePlayers": { "type": "integer" },
+        "signalHistory": { "type": "array", "items": { "type": "number" } },
+        "nextSignal": { "type": "number" }
+      }
+    },
+    "MobeitorBet": {
+      "title": "Mobeitor Game Bet",
+      "description": "User bet record for a game round",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "userName": { "type": "string" },
+        "roomId": { "type": "string" },
+        "amount": { "type": "number" },
+        "multiplier": { "type": "number" },
+        "payout": { "type": "number" },
+        "status": { "type": "string", "enum": ["win", "loss", "pending"] },
+        "timestamp": { "type": "integer" },
+        "autoCashout": { "type": "number" }
+      }
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User profiles"
+    },
+    "/deposits/{depositId}": {
+      "schema": "Deposit",
+      "description": "Deposit requests"
+    },
+    "/withdrawals/{withdrawalId}": {
+      "schema": "Withdrawal",
+      "description": "Withdrawal requests"
+    },
+    "/investments/{investmentId}": {
+      "schema": "Investment",
+      "description": "Active user investments"
+    },
+    "/transactions/{transactionId}": {
+      "schema": "object",
+      "description": "Financial transaction history"
+    },
+    "/notifications/{notificationId}": {
+      "schema": "object",
+      "description": "User notifications"
+    },
+    "/settings/admin": {
+      "schema": "object",
+      "description": "Global admin settings"
+    },
+    "/mobeitor_rooms/{roomId}": {
+      "schema": "MobeitorRoom",
+      "description": "Game room configurations"
+    },
+    "/mobeitor_bets/{betId}": {
+      "schema": "MobeitorBet",
+      "description": "Game betting records"
+    },
+    "/plans/{planId}": {
+      "schema": "InvestmentPlan",
+      "description": "Investment plan protocols"
+    }
+  }
+}

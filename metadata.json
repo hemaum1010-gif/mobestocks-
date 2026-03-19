@@ -1,0 +1,9 @@
+{
+  "name": "MOBESTOCKS",
+  "description": "Smart Digital Investment Platform - Professional fintech investment web application.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone",
+    "geolocation"
+  ]
+}
